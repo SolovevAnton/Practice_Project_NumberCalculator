@@ -14,6 +14,10 @@ import java.util.function.Function;
 public abstract class NumberCalculator {
     private final int[] dataA, massPositive, massNegative;
 
+    public NumberCalculator() {
+        this(0);
+    }
+
     public NumberCalculator(int lengthOfArrays) {
         dataA = new int[lengthOfArrays];
         massPositive = new int[lengthOfArrays];
@@ -25,14 +29,14 @@ public abstract class NumberCalculator {
     /**
      * Method to fill arrays with random numbers
      *
-     * @param numToStart the upperbound for random numbers if it is positive, and lower-bound otherwise
+     * @param numToStart the upperbound for random numbers if it is positive, and lower-bound otherwise, exclusive
      * @param arr        array to fill with numbers
      */
     private void fill(int numToStart, int[] arr) {
         Random rand = new Random();
         for (int i = 0; i < arr.length; i++) {
             arr[i] = numToStart > 0 ? rand.nextInt(numToStart)
-                    : rand.nextInt(numToStart, 0);
+                    : rand.nextInt(numToStart+1, 1); //to make lowerBound exclusive and  inclusive
         }
     }
 
@@ -93,12 +97,12 @@ public abstract class NumberCalculator {
      * @throws IllegalAccessException
      */
     public List<int[]> getData() {
-        Field[] fields = this.getClass().getDeclaredFields();
+        Field[] fields = NumberCalculator.class.getDeclaredFields();
         String includes = "mass";
         Function<Field, int[]> extractData = field -> {
             try {
                 return (int[]) field.get(this);
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException e) { //ToDo how to work with exp
                 throw new RuntimeException(e);
             }
         };

@@ -4,6 +4,9 @@ package com.solovev.model;
  * Class with operation implementation as multiply
  */
 public class MultCalculator extends NumberCalculator {
+    public MultCalculator() {
+    }
+
     public MultCalculator(int lengthOfArrays) {
         super(lengthOfArrays);
     }
