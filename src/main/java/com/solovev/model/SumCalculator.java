@@ -3,7 +3,7 @@ package com.solovev.model;
 /**
  * Class with operation implementation as sum
  */
-public class SumCalculator extends NumberCalculator{
+public class SumCalculator extends NumberCalculator {
     public SumCalculator() {
     }
 
