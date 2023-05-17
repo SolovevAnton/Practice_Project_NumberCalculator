@@ -1,6 +1,7 @@
 package com.solovev.model;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -94,7 +95,6 @@ public abstract class NumberCalculator {
      * Method gets data from all fields with "mass" in it;
      *
      * @return list of arrays which names contains mass in it
-     * @throws IllegalAccessException
      */
     public List<int[]> getData() {
         Field[] fields = NumberCalculator.class.getDeclaredFields();
@@ -102,9 +102,9 @@ public abstract class NumberCalculator {
         Function<Field, int[]> extractData = field -> {
             try {
                 return (int[]) field.get(this);
-            } catch (IllegalAccessException e) { //ToDo how to work with exp
-                throw new RuntimeException(e);
+            } catch (IllegalAccessException ignored) {
             }
+            return null;
         };
         return Arrays
                 .stream(fields)
@@ -115,16 +115,24 @@ public abstract class NumberCalculator {
     }
 
     /**
-     * Method creates list of getter methods that start from "getMass"
+     * Method creates list of invoke results of getter methods that start from "getMass"
      *
-     * @return List of methods that starts from getMass
+     * @return list of invoke results that starts from getMass
      */
-    public List<Method> getMass() {
+    public List<int[]> getArrMassRusults() {
         Method[] methods = this.getClass().getMethods();
         String includes = "getMass";
+        Function<Method,int[]> result = m -> {
+            try {
+               return (int[]) m.invoke(this);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        };
         return Arrays
                 .stream(methods)
                 .filter(method -> method.getName().contains(includes))
+                .map(result)
                 .toList();
     }
 

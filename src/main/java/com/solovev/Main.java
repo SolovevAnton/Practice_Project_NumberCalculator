@@ -80,13 +80,9 @@ public class Main {
             //Test9
             System.out.println("\nTest9");
             for (NumberCalculator n : list) {
-                List<Method> getMass = n.getMass();
-                getMass.forEach(System.out::println);
+                List<int[]> getMass = n.getArrMassRusults();
+                getMass.forEach(arr -> System.out.println(Arrays.toString(arr)));
             }
-            //ToDo Why this does not work with varargs?
-            //     list.get(0).getClass().getSuperclass().getDeclaredMethod("fill",int[].class).invoke(list.get(3),1,2,3);
-            //     System.out.println(list.get(3));
-
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             System.out.println(e.getMessage());
         }
